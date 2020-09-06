@@ -41,42 +41,47 @@ public class Controller {
 
     @FXML
     void initialize() {
-//        assert publicKey != null : "fx:id=\"publicKey\" was not injected: check your FXML file 'sample.fxml'.";
-//        assert privateKey != null : "fx:id=\"privateKey\" was not injected: check your FXML file 'sample.fxml'.";
-//        assert encodeButton != null : "fx:id=\"encodeButton\" was not injected: check your FXML file 'sample.fxml'.";
-//        assert decodeButton != null : "fx:id=\"decodeButton\" was not injected: check your FXML file 'sample.fxml'.";
-//        assert resultArea != null : "fx:id=\"resultArea\" was not injected: check your FXML file 'sample.fxml'.";
 
         encodeButton.setOnAction(event -> {
 
             if (privateKey.getText().length() == 16) {
+                resultArea.setStyle("-fx-background-color: #fafafa");
                 resultArea.setDisable(false);
                 resultArea.setEditable(false);
                 try {
                     resultArea.setText(cryptMethods.ecrypt(publicKey.getText(), privateKey.getText()));
-                } catch (NoSuchPaddingException | NoSuchAlgorithmException | InvalidKeyException | BadPaddingException | IllegalBlockSizeException | UnsupportedEncodingException e) {
+                } catch (NoSuchPaddingException | NoSuchAlgorithmException | InvalidKeyException | UnsupportedEncodingException | BadPaddingException | IllegalBlockSizeException e) {
                     e.printStackTrace();
                 }
             } else {
                 resultArea.setText("Key length must be 16");
+                resultArea.setStyle("-fx-background-color: #FF0000");
                 resultArea.setDisable(true);
             }
         });
 
         decodeButton.setOnAction(event -> {
             if (privateKey.getText().length() == 16) {
+                resultArea.setStyle("-fx-background-color: #fafafa");
                 resultArea.setDisable(false);
                 resultArea.setEditable(false);
+
                 try {
                     resultArea.setText(cryptMethods.decrypt(publicKey.getText().getBytes(), privateKey.getText()));
-                } catch (NoSuchPaddingException | NoSuchAlgorithmException | InvalidKeyException | BadPaddingException | IllegalBlockSizeException e) {
-                    e.printStackTrace();
+                } catch (NoSuchPaddingException | NoSuchAlgorithmException | InvalidKeyException | BadPaddingException | IllegalBlockSizeException | IllegalArgumentException e) {
+//                    e.printStackTrace();
+                    resultArea.setStyle("-fx-background-color: #FF0000");
+                    resultArea.setText("Invalid argument -- Key and ciphertext do not match: \n" + e);
+                    resultArea.setDisable(true);
+                    resultArea.setDisable(false);
                 }
             } else {
+                resultArea.setStyle("-fx-background-color: #FF0000");
                 resultArea.setText("Key length must be 16");
                 resultArea.setDisable(true);
             }
         });
     }
+
 
 }
