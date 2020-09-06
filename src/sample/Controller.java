@@ -2,8 +2,11 @@ package sample;
 
 import java.io.UnsupportedEncodingException;
 import java.net.URL;
+import java.nio.charset.Charset;
+import java.nio.charset.StandardCharsets;
 import java.security.InvalidKeyException;
 import java.security.NoSuchAlgorithmException;
+import java.util.Random;
 import java.util.ResourceBundle;
 
 import javafx.fxml.FXML;
@@ -17,6 +20,7 @@ import javax.crypto.NoSuchPaddingException;
 
 public class Controller {
     CryptMethods cryptMethods = new CryptMethods();
+    RandomExample randomExample = new RandomExample();
 
     @FXML
     private ResourceBundle resources;
@@ -31,6 +35,9 @@ public class Controller {
     private TextField privateKey;
 
     @FXML
+    private Button generateButton;
+
+    @FXML
     private Button encodeButton;
 
     @FXML
@@ -41,6 +48,10 @@ public class Controller {
 
     @FXML
     void initialize() {
+
+        generateButton.setOnAction(event -> {
+            privateKey.setText(randomExample.generateRandomString(16));
+        });
 
         encodeButton.setOnAction(event -> {
 
