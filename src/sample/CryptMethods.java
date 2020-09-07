@@ -5,38 +5,34 @@ import javax.crypto.Cipher;
 import javax.crypto.IllegalBlockSizeException;
 import javax.crypto.NoSuchPaddingException;
 import javax.crypto.spec.SecretKeySpec;
-import java.io.UnsupportedEncodingException;
+import java.nio.charset.StandardCharsets;
 import java.security.InvalidKeyException;
 import java.security.NoSuchAlgorithmException;
 import java.util.Base64;
 
-public class CryptMethods {
+class CryptMethods {
 
-    Controller controller;
+    String crypt(String text, String cryptKey) throws NoSuchPaddingException, NoSuchAlgorithmException, InvalidKeyException, BadPaddingException, IllegalBlockSizeException {
+        Cipher cipher = Cipher.getInstance("AES");
 
-    public String ecrypt(String text, String ecryptKey) throws NoSuchPaddingException, NoSuchAlgorithmException, InvalidKeyException, UnsupportedEncodingException, BadPaddingException, IllegalBlockSizeException {
-        Cipher cipher = null;
-
-        cipher = Cipher.getInstance("AES");
-        SecretKeySpec key = new SecretKeySpec(ecryptKey.getBytes(), "AES");
+        SecretKeySpec key = new SecretKeySpec(cryptKey.getBytes(), "AES");
 
         cipher.init(Cipher.ENCRYPT_MODE, key);
         byte[] bytes = new byte[0];
 
-        bytes = cipher.doFinal(text.getBytes("UTF-8"));
+        bytes = cipher.doFinal(text.getBytes(StandardCharsets.UTF_8));
 
         return Base64.getEncoder().encodeToString(bytes);
     }
 
-    public String decrypt(byte[] ecrypt, String decryptKey) throws NoSuchPaddingException, NoSuchAlgorithmException, InvalidKeyException, BadPaddingException, IllegalBlockSizeException {
-        Cipher decryptCipher = null;
+    String decrypt(byte[] crypt, String decryptKey) throws NoSuchPaddingException, NoSuchAlgorithmException, InvalidKeyException, BadPaddingException, IllegalBlockSizeException {
+        Cipher decryptCipher = Cipher.getInstance("AES");
 
-        decryptCipher = Cipher.getInstance("AES");
         SecretKeySpec key = new SecretKeySpec(decryptKey.getBytes(), "AES");
 
         decryptCipher.init(Cipher.DECRYPT_MODE, key);
         byte[] dbytes = new byte[0];
-            dbytes = decryptCipher.doFinal(Base64.getDecoder().decode(ecrypt));
-        return new String(dbytes);
+        dbytes = decryptCipher.doFinal(Base64.getDecoder().decode(crypt));
+        return new String(dbytes, StandardCharsets.UTF_8);
     }
 }

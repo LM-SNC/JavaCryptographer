@@ -1,12 +1,8 @@
 package sample;
 
-import java.io.UnsupportedEncodingException;
 import java.net.URL;
-import java.nio.charset.Charset;
-import java.nio.charset.StandardCharsets;
 import java.security.InvalidKeyException;
 import java.security.NoSuchAlgorithmException;
-import java.util.Random;
 import java.util.ResourceBundle;
 
 import javafx.fxml.FXML;
@@ -19,8 +15,8 @@ import javax.crypto.IllegalBlockSizeException;
 import javax.crypto.NoSuchPaddingException;
 
 public class Controller {
-    CryptMethods cryptMethods = new CryptMethods();
-    RandomExample randomExample = new RandomExample();
+    private CryptMethods cryptMethods = new CryptMethods();
+    private RandomExample randomExample = new RandomExample();
 
     @FXML
     private ResourceBundle resources;
@@ -60,8 +56,8 @@ public class Controller {
                 resultArea.setDisable(false);
                 resultArea.setEditable(false);
                 try {
-                    resultArea.setText(cryptMethods.ecrypt(publicKey.getText(), privateKey.getText()));
-                } catch (NoSuchPaddingException | NoSuchAlgorithmException | InvalidKeyException | UnsupportedEncodingException | BadPaddingException | IllegalBlockSizeException e) {
+                    resultArea.setText(cryptMethods.crypt(publicKey.getText(), privateKey.getText()));
+                } catch (NoSuchPaddingException | NoSuchAlgorithmException | InvalidKeyException | BadPaddingException | IllegalBlockSizeException e) {
                     e.printStackTrace();
                 }
             } else {
